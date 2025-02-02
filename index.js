@@ -21,7 +21,11 @@ async function processMessage(text, userId) {
             conversationHistory[userId].shift();
         }
 
+<<<<<<< HEAD
         const response = await axios.post('http://127.0.0.1:1234/v1/chat/completions', {
+=======
+        const response = await axios.post('http://127.0.0.1:1234/api/v0/chat/completions', {
+>>>>>>> 7ee86b8 (inital commit chatbot)
             model: "deepseek-r1-distill-qwen-7b",
             messages: [
                 { role: "system", content: "Responda de forma natural e amigável, mantendo o contexto da conversa." },
@@ -31,9 +35,12 @@ async function processMessage(text, userId) {
             max_tokens: 500
         });
 
+<<<<<<< HEAD
         console.log(response.data); 
         console.log(response.status);
         console.log(response.statusText);
+=======
+>>>>>>> 7ee86b8 (inital commit chatbot)
         let reply = response.data.choices[0].message.content;
 
         // Remove qualquer <think>...</think> antes de responder
