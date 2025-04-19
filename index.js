@@ -20,6 +20,19 @@ async function processMessage(text, userId) {
         if (conversationHistory[userId].length > 10) {
             conversationHistory[userId].shift();
         }
+        try {
+            const response = await axios.post('http://192.168.0.242:3000/v1/chat/completions', {
+                model: "deepseek-r1-distill-qwen-7b",
+                messages: [
+                    { role: "system", content: "Responda de forma natural e amigável, mantendo o contexto da conversa." },
+                    ...conversationHistory[userId] // Envia o histórico completo do usuário
+                ],
+                temperature: 0.7,
+                max_tokens: 500
+            });
+        } catch (error) {
+            throw new Error('Erro ao se conectar', error);
+        }
 
         const response = await axios.post('http://127.0.0.1:1234/v1/chat/completions', {
             model: "deepseek-r1-distill-qwen-7b",
@@ -31,12 +44,6 @@ async function processMessage(text, userId) {
             max_tokens: 500
         });
 
-<<<<<<< HEAD
-        console.log(response.data); 
-        console.log(response.status);
-        console.log(response.statusText);
-=======
->>>>>>> 7ee86b8 (inital commit chatbot)
         let reply = response.data.choices[0].message.content;
 
         // Remove qualquer <think>...</think> antes de responder
